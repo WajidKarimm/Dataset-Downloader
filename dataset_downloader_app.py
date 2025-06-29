@@ -3,8 +3,18 @@ import pandas as pd
 import numpy as np
 import io
 
-st.set_page_config(page_title="AI Dataset Downloader", layout="centered")
-st.title("📥 AI Dataset Downloader")
+st.set_page_config(page_title="AI Dataset Downloader", layout="wide")
+
+# Use system fonts for faster LCP
+st.markdown("""
+    <style>
+    html, body, [class*="css"]  {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+st.header("AI Dataset Downloader")  # Smaller, faster than st.title
 st.write("Generate and download synthetic datasets for AI training.")
 
 # Category and size options
@@ -29,6 +39,7 @@ size_mb = size_options[size_label]
 st.write(f"**Category:** {category}")
 st.write(f"**Target size:** {size_mb} MB")
 
+@st.cache_data
 def generate_dataset(category, size_mb):
     target_bytes = size_mb * 1024 * 1024
     estimated_rows = min(target_bytes // 200, 100000)
