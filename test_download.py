@@ -29,7 +29,8 @@ def test_download():
         url="https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data",
         category="classification",
         extract=False,
-        metadata={"description": "Iris flower dataset for testing", "test": True}
+        metadata={"description": "Iris flower dataset for testing", "test": True},
+        overwrite=True
     )
     
     if success1:
@@ -46,7 +47,8 @@ def test_download():
         url="https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
         category="regression",
         extract=False,
-        metadata={"description": "Wine quality dataset for testing", "test": True}
+        metadata={"description": "Wine quality dataset for testing", "test": True},
+        overwrite=True
     )
     
     if success2:
@@ -63,7 +65,8 @@ def test_download():
         url="https://archive.ics.uci.edu/ml/machine-learning-databases/diabetes/diabetes.data",
         category="regression",
         extract=False,
-        metadata={"description": "Diabetes dataset for testing", "test": True}
+        metadata={"description": "Diabetes dataset for testing", "test": True},
+        overwrite=True
     )
     
     if success3:

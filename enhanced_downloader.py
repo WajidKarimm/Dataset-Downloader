@@ -150,7 +150,7 @@ class EnhancedDatasetDownloader:
             self.logger.error(f"Error extracting {archive_path}: {str(e)}")
             return False
             
-    def download_dataset(self, name, url, category="general", extract=True, metadata=None):
+    def download_dataset(self, name, url, category="general", extract=True, metadata=None, overwrite=None):
         """
         Download a dataset from URL
         
@@ -160,6 +160,7 @@ class EnhancedDatasetDownloader:
             category (str): Category for organization
             extract (bool): Whether to extract the downloaded file
             metadata (dict): Additional metadata about the dataset
+            overwrite (bool): Whether to overwrite existing files without prompting
         """
         # Create category directory
         category_dir = self.base_dir / "raw" / category
@@ -176,10 +177,15 @@ class EnhancedDatasetDownloader:
         # Check if file already exists
         if destination.exists():
             self.logger.info(f"File already exists: {destination}")
-            response = input("Do you want to overwrite? (y/n): ").lower()
-            if response != 'y':
-                self.logger.info("Skipping download.")
+            if overwrite is None:
+                response = input("Do you want to overwrite? (y/n): ").lower()
+                if response != 'y':
+                    self.logger.info("Skipping download.")
+                    return True
+            elif not overwrite:
+                self.logger.info("Skipping download (overwrite disabled).")
                 return True
+            # else: overwrite is True, so proceed
         
         # Download the file
         self.logger.info(f"Starting download of {name} from {url}")
@@ -264,7 +270,8 @@ class EnhancedDatasetDownloader:
                 url=dataset['url'],
                 category=dataset.get('category', 'general'),
                 extract=dataset.get('extract', True),
-                metadata=dataset.get('metadata', {})
+                metadata=dataset.get('metadata', {}),
+                overwrite=dataset.get('overwrite', None)
             ):
                 successful += 1
                 
